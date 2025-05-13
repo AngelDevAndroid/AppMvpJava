@@ -2,8 +2,14 @@ package com.angandroid.appmvprxjava.di;
 
 import com.angandroid.appmvprxjava.interfaces.InterfaceData;
 import com.angandroid.appmvprxjava.model.DataInteractImpl;
+import com.angandroid.appmvprxjava.network.DataRepository;
 import com.angandroid.appmvprxjava.network.IApiService;
+import com.angandroid.appmvprxjava.pract_dagger.Car;
+import com.angandroid.appmvprxjava.pract_dagger.Motor;
 import com.angandroid.appmvprxjava.presenter.DataPresenterImpl;
+import com.angandroid.appmvprxjava.view.MainActivity;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,7 +20,52 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class DgrModule {
 
+    //----------------------------------------------------------------------------------------------
+    @Named("Diesel")
     @Provides
+    public Motor providesMotorDiesel() {
+        return new Motor("Diesel");
+    }
+
+    @Named("Gasolina")
+    @Provides
+    public Motor providesMotorGas() {
+        return new Motor("Gasolina");
+    }
+
+    @Provides
+    public Car providesCar(@Named("Diesel") Motor motor) {
+        return new Car(motor);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    @Provides
+    DataRepository provideDataRepository() {
+        return new DataRepository(); // Aquí podrías inyectar Retrofit o DB
+    }
+
+    @Provides
+    InterfaceData.IPresenter providePresenter(IApiService service) {
+        return new DataPresenterImpl(service);
+    }
+
+    @Provides
+    Retrofit provideRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl("https://jsonplaceholder.typicode.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
+    @Provides
+    IApiService provideApiService(Retrofit retrofit) {
+        return retrofit.create(IApiService.class);
+    }
+
+    //----------------------------------------------------------------------------------------------
+
+    /*@Provides
     Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com")
@@ -42,4 +93,10 @@ public class DgrModule {
     InterfaceData.IPresenter providePresenter(IApiService service, InterfaceData.IView view) {
         return new DataPresenterImpl(service, view);
     }
+
+     @Provides
+    InterfaceData.IView provideView(MainActivity view) {
+        return view;
+    }
+    */
 }

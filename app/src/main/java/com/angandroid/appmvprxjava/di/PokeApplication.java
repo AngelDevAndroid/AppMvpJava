@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.angandroid.appmvprxjava.interfaces.InterfaceData;
+import com.angandroid.appmvprxjava.view.MainActivity;
 
 public class PokeApplication extends Application {
 
@@ -12,8 +13,8 @@ public class PokeApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        appComponent = DaggerAppComponent.builder().dgrModule(new DgrModule()).build();
+        appComponent = DaggerAppComponent.builder()
+                .dgrModule(new DgrModule()).build();
     }
 
     public static AppComponent getAppComponent() {

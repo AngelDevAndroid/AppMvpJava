@@ -15,39 +15,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DataInteractImpl implements InterfaceData.IModel {
 
-    //@Inject
-    IApiService apiService;
-
-    //@Inject
+    // Square ->
     InterfaceData.IPresenter presenter;
 
     @Inject
-    public DataInteractImpl(IApiService apiService, InterfaceData.IPresenter presenter) {
-        this.apiService = apiService;
+    public DataInteractImpl(InterfaceData.IPresenter presenter) {
         this.presenter = presenter;
     }
 
-    @SuppressLint("CheckResult")
     @Override
-    public void checkCredentialsModel(String user, String password) {
-         if (user.isEmpty() || password.isEmpty()) {
-              presenter.msgErrorResp();
-         }else {
-               presenter.checkCredentials(user, password);
-         }
-
-         apiService.getPokemonList()
-                 .subscribeOn(Schedulers.io())
-                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(
-                         usuarios -> {
-                             // Manejar la lista de usuarios
-                             Log.d("RESP_API ->", usuarios.toString());
-                         },
-                         throwable -> {
-                             Log.d("RESP_API ->", throwable.toString());
-                             // Manejar el error
-                         }
-                 );
+    public void mToSquare(int sNum) {
+        int resultSquare = sNum * sNum;
+        presenter.pShowResult(String.valueOf(resultSquare));
     }
 }
