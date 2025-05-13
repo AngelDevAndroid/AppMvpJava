@@ -45,11 +45,6 @@ public class DgrModule {
     }
 
     @Provides
-    InterfaceData.IPresenter providePresenter(IApiService service) {
-        return new DataPresenterImpl(service);
-    }
-
-    @Provides
     Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com")
@@ -61,6 +56,11 @@ public class DgrModule {
     @Provides
     IApiService provideApiService(Retrofit retrofit) {
         return retrofit.create(IApiService.class);
+    }
+
+    @Provides
+    InterfaceData.IPresenter providePresenter(IApiService service) {
+        return new DataPresenterImpl(service);
     }
 
     //----------------------------------------------------------------------------------------------

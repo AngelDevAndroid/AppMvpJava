@@ -17,8 +17,6 @@ public interface InterfaceData {
 
          /*void showProgress();
          void hideProgress();
-
-         void msgErrorResp();
          void msgSuccessResp();*/
 
     }
