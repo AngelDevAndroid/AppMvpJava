@@ -12,7 +12,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {DgrModule.class})
+@Component(modules = {DgrModule.class, RealmModule.class})
 public interface AppComponent {
 
     void inject(MainActivity view);

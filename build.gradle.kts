@@ -2,3 +2,9 @@
 plugins {
     alias(libs.plugins.android.application) apply false
 }
+
+buildscript {
+    dependencies {
+        classpath ("io.realm:realm-gradle-plugin:10.16.1")
+    }
+}

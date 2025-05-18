@@ -1,7 +1,6 @@
 package com.angandroid.appmvprxjava.interfaces;
 
 import com.angandroid.appmvprxjava.network.Post;
-import com.angandroid.appmvprxjava.view.MainActivity;
 
 import java.util.List;
 
@@ -11,14 +10,12 @@ public interface InterfaceData {
 
         void vShowResult(String result);
         void showMessage(String message);
-
         void onUsersReceived(List<Post> users);
         void onError(String message);
 
-         /*void showProgress();
-         void hideProgress();
-         void msgSuccessResp();*/
-
+        /*void showProgress();
+        void hideProgress();
+        void msgSuccessResp();*/
     }
 
     interface IPresenter {
@@ -30,7 +27,7 @@ public interface InterfaceData {
         void pShowResult(String result);
         void pToSquare(int sNum);
 
-         /*void checkCredentials(String user, String password);
+        /*void checkCredentials(String user, String password);
 
         void msgErrorResp();
         void msgSuccessResp();*/
@@ -42,6 +39,5 @@ public interface InterfaceData {
 
         // Square ->
         void mToSquare(int sNum);
-
     }
 }

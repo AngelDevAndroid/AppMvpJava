@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     kotlin("kapt") version "2.1.20"
+    id ("realm-android")
 }
 
 android {

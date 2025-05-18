@@ -32,7 +32,8 @@ public class DataPresenterImpl implements InterfaceData.IPresenter {
     public void loadMessage() {
 
         if (view != null) {
-            repository.getPokemonList() .subscribeOn(Schedulers.io())
+            repository.getPokemonList()
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(users -> {
                         view.onUsersReceived(users);

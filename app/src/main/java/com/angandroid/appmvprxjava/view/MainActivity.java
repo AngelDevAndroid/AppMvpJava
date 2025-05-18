@@ -16,12 +16,14 @@ import com.angandroid.appmvprxjava.di.DaggerAppComponent;
 import com.angandroid.appmvprxjava.di.DgrModule;
 import com.angandroid.appmvprxjava.di.PokeApplication;
 import com.angandroid.appmvprxjava.interfaces.InterfaceData;
+import com.angandroid.appmvprxjava.interfaces.InterfaceDataRealm;
 import com.angandroid.appmvprxjava.model.DataInteractImpl;
 import com.angandroid.appmvprxjava.network.IApiService;
 import com.angandroid.appmvprxjava.network.Post;
 import com.angandroid.appmvprxjava.pract_dagger.Car;
 import com.angandroid.appmvprxjava.pract_dagger.Motor;
 import com.angandroid.appmvprxjava.presenter.DataPresenterImpl;
+import com.angandroid.appmvprxjava.realm.DevelopersModel;
 import com.angandroid.appmvprxjava.utils_reuse.UtilsCode;
 
 import java.util.List;
@@ -29,7 +31,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-public class MainActivity extends AppCompatActivity implements InterfaceData.IView {
+import io.realm.Realm;
+
+public class MainActivity extends AppCompatActivity implements InterfaceData.IView, InterfaceDataRealm.IRmView  {
 
     // Views
     ActivityMainBinding bindMain;
@@ -43,6 +47,11 @@ public class MainActivity extends AppCompatActivity implements InterfaceData.IVi
 
     @Inject
     InterfaceData.IPresenter iPresenter;
+    @Inject
+    InterfaceDataRealm.IRmPresenter iRmPresenter;
+
+    @Inject
+    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +65,18 @@ public class MainActivity extends AppCompatActivity implements InterfaceData.IVi
         PokeApplication.getAppComponent().inject(this);
 
         iPresenter.attachView(this);
+        iRmPresenter.attachView(this);
+
+        DevelopersModel devs = new DevelopersModel();
+
+        devs.setId(iRmPresenter.setIdRm());
+        devs.setName("Juan Pérez");
+        devs.setCodeProg("Kotlin");
+
         iPresenter.loadMessage();
+        iRmPresenter.vSaveDev(devs);
+        //delDevByIdX(7);
+        iRmPresenter.pReadDataDev();
 
         loadDataPoke();
         getDataMotor();
@@ -81,13 +101,11 @@ public class MainActivity extends AppCompatActivity implements InterfaceData.IVi
     @Override
     public void onUsersReceived(List<Post> users) {
         Log.d("DGR_TST", users.get(0).getTitle());
-
     }
 
     @Override
     public void onError(String message) {
         Log.d("DGR_TST", message);
-
     }
 
     public void loadDataPoke() {
@@ -98,5 +116,31 @@ public class MainActivity extends AppCompatActivity implements InterfaceData.IVi
     @Override
     public void vShowResult(String result) {
         Log.d("DGR_TST", result);
+    }
+
+    @Override
+    public void getListDevs(List<DevelopersModel> lstDevs) {
+        for (int i = 0; i < lstDevs.size(); i++) {
+            Log.d("DGR_RM->", "" + lstDevs.get(i).getCodeProg());
+        }
+    }
+
+    @Override
+    public void setMsgSuccess(String msgSuccess) {
+        new UtilsCode().setMsgToast(msgSuccess, this);
+    }
+
+    @Override
+    public void setMsgError(String error) {
+       new UtilsCode().setMsgToast("Error:" + error, this);
+    }
+
+    @Override
+    public void delDevById(String idDev) {
+       // iRmPresenter.delDevById("3");
+    }
+
+    public void delDevByIdX(int idDev) {
+        iRmPresenter.delDevById(idDev);
     }
 }

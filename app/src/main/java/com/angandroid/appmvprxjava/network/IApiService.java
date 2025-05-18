@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 
 public interface IApiService {
     @GET("/posts")
-   // Observable<PokemonResponse> getPokemonList();
+    // Observable<PokemonResponse> getPokemonList();
     Single<List<Post>> getPokemonList();
 }
